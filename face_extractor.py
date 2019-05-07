@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # Import libraries
+import sys
 import os
 import cv2
 import numpy as np
@@ -12,17 +13,14 @@ caffemodel_path = os.path.join(base_dir + 'model_data/weights.caffemodel')
 # Read the model
 model = cv2.dnn.readNetFromCaffe(prototxt_path, caffemodel_path)
 
-# Create directory 'faces' if it does not exist
-if not os.path.exists('faces'):
-	print("New directory created")
-	os.makedirs('faces')
 
-# Loop through all images and strip out faces
-count = 0
-for file in os.listdir(base_dir + 'images'):
-	file_name, file_extension = os.path.splitext(file)
+def get_face_rects(image_path):
+	result = [];
+	coords = [];
+	image_id = 0
+	file_name, file_extension = os.path.splitext(image_path)
 	if (file_extension in ['.png','.JPG','.jpg','.jpeg']):
-		image = cv2.imread(base_dir + 'images/' + file)
+		image = cv2.imread(image_path)
 
 		(h, w) = image.shape[:2]
 		blob = cv2.dnn.blobFromImage(cv2.resize(image, (300, 300)), 1.0, (300, 300), (104.0, 177.0, 123.0))
@@ -39,8 +37,25 @@ for file in os.listdir(base_dir + 'images'):
 
 			# If confidence > 0.5, save it as a separate file
 			if (confidence > 0.5):
-				count += 1
-				frame = image[startY:endY, startX:endX]
-				cv2.imwrite(base_dir + 'faces/' + str(i) + '_' + file, frame)
+				result.append(image_id)
+				result.append(startX)
+				result.append(endX)
+				result.append(startY)
+				result.append(endY)
+				image_id += 1
+	return result
 
-print("Extracted " + str(count) + " faces from all images")
+
+# return types:
+# vector of arrays with coordinates for each face, 
+# where array starts with face unique index.
+# 2 - invalid number of arguments
+argv = sys.argv
+if(len(argv) != 2):
+    print "err"
+else:
+    res = get_face_rects(argv[1])
+    for element in res:
+    	print element
+    	print ','
+    print '.'

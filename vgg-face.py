@@ -26,12 +26,11 @@
 #    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #    SOFTWARE.
 
-
+import sys
 from keras.models import Model, Sequential, model_from_json
 from keras.layers import Input, Convolution2D, ZeroPadding2D, MaxPooling2D, Flatten, Dense, Dropout, Activation
 from PIL import Image
 import numpy as np
-import sys
 from keras.preprocessing.image import load_img, save_img, img_to_array
 from keras.applications.imagenet_utils import preprocess_input
 from keras.preprocessing import image
@@ -140,17 +139,17 @@ def loadFaceDescriptor():
 
 # MARK: verifyFace
 """
-    verifyFace(img1, img2).
+    verifyFace(absolute_path_img1, absolute_path_img2).
     Input: absolute paths of 2 faces images to compare.
     Output: 1 - if the same person, 0 - if not.
     """
-def verifyFace(img1, img2):
+def verifyFace(absolute_path_img1, absolute_path_img2):
     # threshold value
     epsilon = 0.40
     
     vgg_face_descriptor = loadFaceDescriptor()
-    img1_representation = vgg_face_descriptor.predict(preprocess_image('%s' % (img1)))[0,:]
-    img2_representation = vgg_face_descriptor.predict(preprocess_image('%s' % (img2)))[0,:]
+    img1_representation = vgg_face_descriptor.predict(preprocess_image('%s' % (absolute_path_img1)))[0,:]
+    img2_representation = vgg_face_descriptor.predict(preprocess_image('%s' % (absolute_path_img2)))[0,:]
     
     cosine_similarity = findCosineSimilarity(img1_representation, img2_representation)
     euclidean_distance = findEuclideanDistance(img1_representation, img2_representation)
@@ -159,3 +158,17 @@ def verifyFace(img1, img2):
         return 1
     else:
         return 0
+
+
+
+# return types:
+# 0 - not same
+# 1 - same
+# 2 - invalid number of arguments
+
+argv = sys.argv
+if(len(argv) != 3):
+    print "2"
+else:
+    res = verifyFace(argv[1], argv[2])
+    print res
