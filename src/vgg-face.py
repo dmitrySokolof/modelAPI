@@ -26,6 +26,7 @@
 #    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #    SOFTWARE.
 
+import shutil
 import sys
 import os
 from keras.models import Model, Sequential, model_from_json
@@ -170,8 +171,6 @@ argv = sys.argv
 if(len(argv) != 2):
     print "2"
 else:
-    # res = verifyFace(argv[1], argv[2])
-    # print res
     vgg_face_descriptor = loadFaceDescriptor()
     template_dir = argv[1]
     base_dir = os.path.dirname(__file__)
@@ -195,6 +194,8 @@ else:
                     image_id, file_extension = os.path.splitext(template)
                     result = 1
         
+        shutil.rmtree('/faces')
+
         if result == 0:
             print "1"
         if result == 1: 
