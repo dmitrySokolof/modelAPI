@@ -156,3 +156,7 @@ dmypy.json
 *.app
 
 .DS_Store
+
+# JetBrains products
+.idea
+cmake-build-debug

@@ -20,7 +20,7 @@
 // test eviscerated pstreams
 #define REDI_EVISCERATE_PSTREAMS 1
 
-#include "pstream.h"
+#include "inclide/pstreams-1.0.1/pstream.h"
 
 // include these after pstream.h to ensure it #includes everything it needs
 #include <iostream>

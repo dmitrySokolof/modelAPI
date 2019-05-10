@@ -17,7 +17,7 @@
 #include <map>
 
 /// available via link: https://sourceforge.net/projects/pstreams/
-#include "../pstreams-1.0.1/pstream.h"
+#include <pstreams-1.0.1/pstream.h>
 #include <Python/Python.h>
 
 
