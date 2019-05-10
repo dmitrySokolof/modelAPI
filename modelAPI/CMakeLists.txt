@@ -13,7 +13,7 @@ include_directories(${modelAPI_needed_includes})
 set(SOURCES
 	vgg-face-api.cpp)
 
-set(BUILD_SHARED_LIBS false)
+set(BUILD_SHARED_LIBS true)
 
 ADD_LIBRARY(${PROJECT_NAME} ${SOURCES})
 
