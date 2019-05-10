@@ -23,7 +23,10 @@ target_include_directories(${PROJECT_NAME}
 		PUBLIC ${modelAPI_needed_includes}
 		)
 
-configure_file(face_extractor.py ${CMAKE_BINARY_DIR}/face_extractor.py COPYONLY)
 configure_file(vgg-face.py ${CMAKE_BINARY_DIR}/vgg-face.py COPYONLY)
+configure_file(face_extractor.py ${CMAKE_BINARY_DIR}/face_extractor.py COPYONLY)
+configure_file(deploy.prototxt ${CMAKE_BINARY_DIR}/deploy.prototxt COPYONLY)
+configure_file(weights.caffemodel ${CMAKE_BINARY_DIR}/weights.caffemodel COPYONLY)
+configure_file(vgg_face_weights.h5 ${CMAKE_BINARY_DIR}/vgg_face_weights.h5 COPYONLY)
 
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
