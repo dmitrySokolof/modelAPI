@@ -1,5 +1,10 @@
-keras
 numpy
 Pillow
 matplotlib
 opencv-python
+scipy
+scikit-learn
+h5py
+pyyaml
+tensorflow
+keras
