@@ -1,4 +1,4 @@
-#include "vgg-face-api.h"
+#include <modelAPI/vgg-face-api.h>
 
 /// EXAMPLE of usage.
 int main()
