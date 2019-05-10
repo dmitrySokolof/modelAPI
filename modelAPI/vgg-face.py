@@ -193,12 +193,12 @@ else:
                     cosine_similarity = res[1]
                     image_id, file_extension = os.path.splitext(template)
                     result = 1
-        
-        shutil.rmtree('/faces')
 
         if result == 0:
             print "1"
         if result == 1: 
             print image_id
+
+    shutil.rmtree('faces')
 
 
