@@ -46,11 +46,11 @@ namespace
  *         ERR_CMD_LINE_ARGS - if invalid number of arguments
  *         person id
  */
-std::vector<std::string> _whichFace(const std::string& template_img_path, const std::string& scriptsFolder)
+std::vector<std::string> _whichFace(const std::string& template_img_path, const std::string& scriptsFolder, const int& thread_id)
 {
     const std::string scriptToExecute = MakeScriptPath(scriptsFolder, "vgg-face.py");
 
-    const std::string command = "python " + scriptToExecute + " " + template_img_path;
+    const std::string command = "python " + scriptToExecute + " " + template_img_path + " " + std::to_string(thread_id);
 
     std::vector<std::string> result;
 
@@ -123,6 +123,9 @@ namespace UUUU
         std::string currentNumber = "";
         std::string currentID = "";
 
+        bool isFisrt = true;
+        int thread_id = 0;
+
         while (in >> buffer) 
         {
             if (buffer == "err")
@@ -132,7 +135,7 @@ namespace UUUU
             }
 
             // if line starts from '.', finish reading.
-            if (buffer == ".")
+            else if (buffer == ".")
             {
                 break;
             }
@@ -161,11 +164,17 @@ namespace UUUU
             // if line starts from number, read the whole number
             else if (buffer != ",")
             {
+                if(isFisrt)
+                {
+                    isFisrt = false;
+                    thread_id = std::stoi(buffer);
+                    continue;
+                }
                 currentNumber = buffer;
             }
         }
 
-        std::vector< std::string > labels = _whichFace(template_img_path, scriptsFolder);
+        std::vector< std::string > labels = _whichFace(template_img_path, scriptsFolder, thread_id);
 
         /// MARK: it should be guaranteed that labels and result size are equal
         int j = 0;

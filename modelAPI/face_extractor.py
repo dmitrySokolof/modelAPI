@@ -5,20 +5,19 @@ import os
 import cv2
 import numpy as np
 
-thread_id = 0
-
 # Define paths
 base_dir = os.path.dirname(__file__)
 prototxt_path = os.path.join(base_dir + 'deploy.prototxt')
 caffemodel_path = os.path.join(base_dir + 'weights.caffemodel')
 
+thread_id = 0
 # Read the model
 model = cv2.dnn.readNetFromCaffe(prototxt_path, caffemodel_path)
 
-# Create directory 'faces' if it does not exist
-for i in range(0,1000):
-	if not os.path.exists('/tmp/faces%d' % i):
-		os.makedirs('/tmp/faces%d' % i)
+# Create directory '/tmp/faces%d' if it does not exist
+for i in range(0, 1000):
+	if not os.path.exists('/tmp/StudentsManagers_cache/faces%d' % i):
+		os.makedirs('/tmp/StudentsManagers_cache/faces%d' % i)
 		thread_id = i
 		break
 
@@ -52,12 +51,12 @@ def get_face_rects(image_path):
 				result.append(endY)
 				image_id += 1
 				frame = image[startY:endY, startX:endX]
-				cv2.imwrite(base_dir + '/tmp/faces%d' % thread_id + str(image_id) + file_extension, frame)
+				cv2.imwrite('/tmp/StudentsManagers_cache/faces%d/' % thread_id + str(image_id) + file_extension, frame)
 	return result
 
 
 # return types:
-# thread_id;
+# thread_id
 # vector of arrays with coordinates for each face, 
 # where array starts with face unique index.
 # 2 - invalid number of arguments
