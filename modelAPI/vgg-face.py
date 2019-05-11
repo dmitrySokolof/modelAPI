@@ -171,11 +171,9 @@ argv = sys.argv
 if(len(argv) != 3):
     print "2"
 else:
-    thread_id = int(argv[2])
     vgg_face_descriptor = loadFaceDescriptor()
     template_dir = argv[1]
-    base_dir = os.path.dirname(__file__)
-    target_img_dir = '/tmp/StudentsManagers_cache/faces%d/' % thread_id
+    target_img_dir = argv[2]
 
     if os.path.exists(target_img_dir + '.DS_Store'):
         os.remove(target_img_dir + '.DS_Store')
@@ -200,6 +198,6 @@ else:
         if result == 1: 
             print image_id
 
-    shutil.rmtree('/tmp/StudentsManagers_cache/faces%d/' % thread_id)
+    shutil.rmtree(target_img_dir)
 
 

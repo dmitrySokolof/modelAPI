@@ -4,22 +4,19 @@ import sys
 import os
 import cv2
 import numpy as np
+import tempfile
 
 # Define paths
 base_dir = os.path.dirname(__file__)
-prototxt_path = os.path.join(base_dir + 'deploy.prototxt')
-caffemodel_path = os.path.join(base_dir + 'weights.caffemodel')
+prototxt_path = os.path.join(base_dir + '/deploy.prototxt')
+caffemodel_path = os.path.join(base_dir + '/weights.caffemodel')
 
 thread_id = 0
 # Read the model
 model = cv2.dnn.readNetFromCaffe(prototxt_path, caffemodel_path)
 
 # Create directory '/tmp/faces%d' if it does not exist
-for i in range(0, 1000):
-	if not os.path.exists('/tmp/StudentsManagers_cache/faces%d' % i):
-		os.makedirs('/tmp/StudentsManagers_cache/faces%d' % i)
-		thread_id = i
-		break
+tmp_dir = tempfile.mkdtemp()
 
 def get_face_rects(image_path):
 	result = [];
@@ -51,7 +48,7 @@ def get_face_rects(image_path):
 				result.append(endY)
 				image_id += 1
 				frame = image[startY:endY, startX:endX]
-				cv2.imwrite('/tmp/StudentsManagers_cache/faces%d/' % thread_id + str(image_id) + file_extension, frame)
+				cv2.imwrite(tmp_dir + '/' + str(image_id) + file_extension, frame)
 	return result
 
 
@@ -64,7 +61,7 @@ argv = sys.argv
 if(len(argv) != 2):
     print "err"
 else:
-	print thread_id
+	print tmp_dir
 	res = get_face_rects(argv[1])
 	for element in res:
 		print element

@@ -42,15 +42,17 @@ namespace
  * Define id of person choosing from template image dataset.
  *
  * @param template_img_path - Path to template images.
+ * @param target_img_path - Path with images to examine.
+ * @param scriptToExecute - Path to script.
  * @return ERR_UNKNOWN_PERSON - if unknown person
  *         ERR_CMD_LINE_ARGS - if invalid number of arguments
  *         person id
  */
-std::vector<std::string> _whichFace(const std::string& template_img_path, const std::string& scriptsFolder, const int& thread_id)
+std::vector<std::string> _whichFace(const std::string& template_img_path, const std::string& target_img_path, const std::string& scriptsFolder)
 {
     const std::string scriptToExecute = MakeScriptPath(scriptsFolder, "vgg-face.py");
 
-    const std::string command = "python " + scriptToExecute + " " + template_img_path + " " + std::to_string(thread_id);
+    const std::string command = "python " + scriptToExecute + " " + template_img_path + " " + target_img_path + "/";
 
     std::vector<std::string> result;
 
@@ -124,7 +126,7 @@ namespace UUUU
         std::string currentID = "";
 
         bool isFisrt = true;
-        int thread_id = 0;
+        std::string target_img_path = "";
 
         while (in >> buffer) 
         {
@@ -167,14 +169,14 @@ namespace UUUU
                 if(isFisrt)
                 {
                     isFisrt = false;
-                    thread_id = std::stoi(buffer);
+                    target_img_path = buffer;
                     continue;
                 }
                 currentNumber = buffer;
             }
         }
 
-        std::vector< std::string > labels = _whichFace(template_img_path, scriptsFolder, thread_id);
+        std::vector< std::string > labels = _whichFace(template_img_path, target_img_path, scriptsFolder);
 
         /// MARK: it should be guaranteed that labels and result size are equal
         int j = 0;
@@ -198,4 +200,4 @@ namespace UUUU
 
         return result;
     }
-} // namespace UUUU
+} // namespace
