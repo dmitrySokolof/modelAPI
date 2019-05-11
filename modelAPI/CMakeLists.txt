@@ -14,6 +14,9 @@ set(PUBLIC_HEADERS
 set(RESOURCE_FILES
 	vgg-face.py
 	face_extractor.py
+	deploy.prototxt
+	weights.caffemodel
+	vgg_face_weights.h5
 	)
 
 include_directories(${MODELAPI_NEEDED_INCLUDES})
@@ -21,7 +24,11 @@ include_directories(${MODELAPI_NEEDED_INCLUDES})
 set(SOURCES
 	vgg-face-api.cpp)
 
-if (APPLE)
+if (NOT DEFINED BUILD_FRAMEWORK)
+    set(BUILD_FRAMEWORK false)
+endif()
+
+if (BUILD_FRAMEWORK)
 	ADD_LIBRARY(${PROJECT_NAME} SHARED ${SOURCES} ${PUBLIC_HEADERS} ${RESOURCE_FILES})
 
 	set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -39,11 +46,9 @@ else()
 			PUBLIC ${MODELAPI_NEEDED_INCLUDES}
 			)
 
-	configure_file(vgg-face.py ${CMAKE_BINARY_DIR}/vgg-face.py COPYONLY)
-	configure_file(face_extractor.py ${CMAKE_BINARY_DIR}/face_extractor.py COPYONLY)
-	configure_file(deploy.prototxt ${CMAKE_BINARY_DIR}/deploy.prototxt COPYONLY)
-	configure_file(weights.caffemodel ${CMAKE_BINARY_DIR}/weights.caffemodel COPYONLY)
-	configure_file(vgg_face_weights.h5 ${CMAKE_BINARY_DIR}/vgg_face_weights.h5 COPYONLY)
+	foreach(RESOURCE ${RESOURCE_FILES})
+        configure_file(${RESOURCE} ${CMAKE_BINARY_DIR}/${RESOURCE} COPYONLY)
+	endforeach()
 
 	add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 endif()
