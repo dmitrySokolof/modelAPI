@@ -8,8 +8,8 @@ import tempfile
 
 # Define paths
 base_dir = os.path.dirname(__file__)
-prototxt_path = os.path.join(base_dir + '/deploy.prototxt')
-caffemodel_path = os.path.join(base_dir + '/weights.caffemodel')
+prototxt_path = os.path.join(base_dir + 'deploy.prototxt')
+caffemodel_path = os.path.join(base_dir + 'weights.caffemodel')
 
 thread_id = 0
 # Read the model
