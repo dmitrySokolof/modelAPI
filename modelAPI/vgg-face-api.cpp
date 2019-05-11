@@ -7,48 +7,65 @@
 
 #include "vgg-face-api.h"
 
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+#include <sstream>
+#include <cstdlib>
+#include <cstdio>
+
+/// available via link: https://sourceforge.net/projects/pstreams/
+#include <pstreams-1.0.1/pstream.h>
+
+#include <Python/Python.h>
+
 #define ERR_CMD_LINE_ARGS 2 /// invalid number of arguments
 #define ERR_UNKNOWN_PERSON 1 /// unknown person
 
+namespace
+{
+
+/**
+ * Internal usage **only**.
+ * Define id of person choosing from template image dataset.
+ *
+ * @param template_img_path - Path to template images.
+ * @return ERR_UNKNOWN_PERSON - if unknown person
+ *         ERR_CMD_LINE_ARGS - if invalid number of arguments
+ *         person id
+ */
+std::vector< std::string > _whichFace(std::string const & template_img_path)
+{
+    std::string command = "python vgg-face.py " + template_img_path;
+
+    std::vector< std::string > result;
+
+    redi::ipstream in(command);
+    std::string buffer;
+    while (in >> buffer)
+    {
+        if (buffer == "1")
+        {
+            result.push_back("Unknown");
+        }
+        else if (buffer == "2")
+        {
+            std::cerr << "_whichFace: error code: 2" << std::endl;
+            return result;
+        }
+        else
+        {
+            result.push_back(buffer);
+        }
+    }
+
+    return result;
+}
+
+} // namespace
+
 namespace UUUU
 {
-    /**
-     * Internal usage **only**.
-     * Define id of person choosing from template image dataset.
-     * 
-     * @param template_img_path - Path to template images.
-     * @return ERR_UNKNOWN_PERSON - if unknown person
-     *         ERR_CMD_LINE_ARGS - if invalid number of arguments
-     *         person id
-     */
-    std::vector< std::string > _whichFace(std::string const & template_img_path)
-    {
-        std::string command = "python vgg-face.py " + template_img_path;
-
-        std::vector< std::string > result;
-
-        redi::ipstream in(command);
-        std::string buffer;
-        while (in >> buffer) 
-        {
-            if (buffer == "1")
-            {
-                result.push_back("Unknown");
-            }
-            else if (buffer == "2")
-            {
-                std::cerr << "_whichFace: error code: 2" << std::endl;
-                return result;
-            }
-            else
-            {
-                result.push_back(buffer);
-            }
-        }
-
-        return result;
-    }
-    
     /**
      * Get coordinates of face rectangle for each face on the image.
      * 
@@ -77,7 +94,7 @@ namespace UUUU
      * |                                |
      * ----------------------------------
      */
-    std::map<std::string, Coords> findLabeledFaceRect(std::string const & img, std::string const & template_img_path)
+    std::map<std::string, Coords> findLabeledFaceRect(const std::string& img, const std::string& template_img_path)
     {
         std::string command = "python face_extractor.py " + img;
 
