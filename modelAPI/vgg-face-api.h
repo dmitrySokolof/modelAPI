@@ -41,6 +41,6 @@ namespace UUUU
      * |                                |
      * ----------------------------------
      */
-     std::map<std::string, Coords> findLabeledFaceRect(const std::string& img, const std::string& template_img_path);
+     std::map<std::string, Coords> findLabeledFaceRect(const std::string& img, const std::string& template_img_path, const std::string& scriptsFolder = "");
 
 } // namespace UUUU

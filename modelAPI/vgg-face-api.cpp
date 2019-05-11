@@ -24,7 +24,19 @@
 
 namespace
 {
-
+    const auto MakeScriptPath = [](const auto& dir, const auto& scriptName) -> std::string
+    {
+        const std::string dirNormalised = [&dir]()
+        {
+            std::string dirNormalised = dir;
+            if (!dirNormalised.empty() && *dirNormalised.rbegin() != '/')
+                dirNormalised += '/';
+            return std::move(dirNormalised);
+        }();
+        
+        return dirNormalised + scriptName;
+    };
+    
 /**
  * Internal usage **only**.
  * Define id of person choosing from template image dataset.
@@ -34,11 +46,13 @@ namespace
  *         ERR_CMD_LINE_ARGS - if invalid number of arguments
  *         person id
  */
-std::vector< std::string > _whichFace(std::string const & template_img_path)
+std::vector<std::string> _whichFace(const std::string& template_img_path, const std::string& scriptsFolder)
 {
-    std::string command = "python vgg-face.py " + template_img_path;
+    const std::string scriptToExecute = MakeScriptPath(scriptsFolder, "vgg-face.py");
 
-    std::vector< std::string > result;
+    const std::string command = "python " + scriptToExecute + " " + template_img_path;
+
+    std::vector<std::string> result;
 
     redi::ipstream in(command);
     std::string buffer;
@@ -94,9 +108,11 @@ namespace UUUU
      * |                                |
      * ----------------------------------
      */
-    std::map<std::string, Coords> findLabeledFaceRect(const std::string& img, const std::string& template_img_path)
+    std::map<std::string, Coords> findLabeledFaceRect(const std::string& img, const std::string& template_img_path, const std::string& scriptsFolder)
     {
-        std::string command = "python face_extractor.py " + img;
+        const std::string scriptToExecute = MakeScriptPath(scriptsFolder, "face_extractor.py");
+        
+        const std::string command = "python " + scriptToExecute + " " + img;
 
         redi::ipstream in(command);
         std::string buffer;
@@ -149,7 +165,7 @@ namespace UUUU
             }
         }
 
-        std::vector< std::string > labels = _whichFace(template_img_path);
+        std::vector< std::string > labels = _whichFace(template_img_path, scriptsFolder);
 
         /// MARK: it should be guaranteed that labels and result size are equal
         int j = 0;
