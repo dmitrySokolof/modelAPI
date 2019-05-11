@@ -1,3 +1,5 @@
+
+#include <iostream>
 #include <modelAPI/vgg-face-api.h>
 
 /// EXAMPLE of usage.

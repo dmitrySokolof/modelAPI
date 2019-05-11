@@ -5,28 +5,50 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_COMPILER /usr/bin/gcc)
 set(CMAKE_CXX_COMPILER /usr/bin/g++)
 
-set(modelAPI_needed_includes
+set(MODELAPI_NEEDED_INCLUDES
 	external/pstreams-1.0.1/include)
 
-include_directories(${modelAPI_needed_includes})
+set(PUBLIC_HEADERS
+	vgg-face-api.h)
+
+set(RESOURCE_FILES
+	vgg-face.py
+	face_extractor.py
+	deploy.prototxt
+	weights.caffemodel
+	vgg_face_weights.h5
+	)
+
+include_directories(${MODELAPI_NEEDED_INCLUDES})
 
 set(SOURCES
 	vgg-face-api.cpp)
 
-set(BUILD_SHARED_LIBS false)
+if (NOT DEFINED BUILD_FRAMEWORK)
+    set(BUILD_FRAMEWORK false)
+endif()
 
-ADD_LIBRARY(${PROJECT_NAME} ${SOURCES})
+if (BUILD_FRAMEWORK)
+	ADD_LIBRARY(${PROJECT_NAME} SHARED ${SOURCES} ${PUBLIC_HEADERS} ${RESOURCE_FILES})
 
-target_include_directories(${PROJECT_NAME}
-		INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
-		INTERFACE $<INSTALL_INTERFACE:include>
-		PUBLIC ${modelAPI_needed_includes}
-		)
+	set_target_properties(${PROJECT_NAME} PROPERTIES
+			FRAMEWORK TRUE
+			MACOSX_FRAMEWORK_IDENTIFIER com.uuuu.${PROJECT_NAME}
+			PUBLIC_HEADER ${PUBLIC_HEADERS}
+			RESOURCE "${RESOURCE_FILES}"
+			)
+else()
+	ADD_LIBRARY(${PROJECT_NAME} SHARED ${SOURCES})
 
-configure_file(vgg-face.py ${CMAKE_BINARY_DIR}/vgg-face.py COPYONLY)
-configure_file(face_extractor.py ${CMAKE_BINARY_DIR}/face_extractor.py COPYONLY)
-configure_file(deploy.prototxt ${CMAKE_BINARY_DIR}/deploy.prototxt COPYONLY)
-configure_file(weights.caffemodel ${CMAKE_BINARY_DIR}/weights.caffemodel COPYONLY)
-configure_file(vgg_face_weights.h5 ${CMAKE_BINARY_DIR}/vgg_face_weights.h5 COPYONLY)
+	target_include_directories(${PROJECT_NAME}
+			INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
+			INTERFACE $<INSTALL_INTERFACE:include>
+			PUBLIC ${MODELAPI_NEEDED_INCLUDES}
+			)
 
-add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+	foreach(RESOURCE ${RESOURCE_FILES})
+        configure_file(${RESOURCE} ${CMAKE_BINARY_DIR}/${RESOURCE} COPYONLY)
+	endforeach()
+
+	add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+endif()
