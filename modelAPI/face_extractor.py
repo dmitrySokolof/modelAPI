@@ -7,7 +7,7 @@ import numpy as np
 import tempfile
 
 # Define paths
-base_dir = os.getcwd()
+base_dir = os.path.dirname(os.path.abspath(__file__))
 prototxt_path = os.path.join(base_dir + '/deploy.prototxt')
 caffemodel_path = os.path.join(base_dir + '/weights.caffemodel')
 
