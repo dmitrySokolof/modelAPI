@@ -132,7 +132,7 @@ def loadFaceDescriptor():
     model.add(Flatten())
     model.add(Activation('softmax'))
     
-    base_dir = os.path.dirname(__file__)
+    base_dir = os.getcwd()
     weights_path = base_dir + '/vgg_face_weights.h5'
     # loading weights. They should be put in the same directory with script.
     model.load_weights(weights_path)
