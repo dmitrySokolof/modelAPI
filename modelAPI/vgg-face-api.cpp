@@ -200,4 +200,4 @@ namespace UUUU
 
         return result;
     }
-} // namespace
+} // namespace UUUU
