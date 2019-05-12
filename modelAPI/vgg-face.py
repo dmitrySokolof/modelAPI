@@ -171,7 +171,7 @@ def verifyFace(absolute_path_img1, absolute_path_img2, vgg_face_descriptor):
 
 argv = sys.argv
 if(len(argv) != 3):
-    print "2"
+    sys.stdout.write('2' + '\n')
 else:
     vgg_face_descriptor = loadFaceDescriptor()
     template_dir = argv[1]
@@ -196,9 +196,9 @@ else:
                     result = 1
 
         if result == 0:
-            print "1"
+            sys.stdout.write('1' + '\n')
         if result == 1: 
-            print image_id
+            sys.stdout.write(image_id + '\n')
 
     shutil.rmtree(target_img_dir)
 

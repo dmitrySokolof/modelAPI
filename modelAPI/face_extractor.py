@@ -11,11 +11,10 @@ base_dir = os.path.dirname(os.path.abspath(__file__))
 prototxt_path = os.path.join(base_dir + '/deploy.prototxt')
 caffemodel_path = os.path.join(base_dir + '/weights.caffemodel')
 
-thread_id = 0
 # Read the model
 model = cv2.dnn.readNetFromCaffe(prototxt_path, caffemodel_path)
 
-# Create directory '/tmp/faces%d' if it does not exist
+# Securely create temporary directory. vgg-face.py is responsible for removing after finished work.
 tmp_dir = tempfile.mkdtemp()
 
 def get_face_rects(image_path):
@@ -53,17 +52,17 @@ def get_face_rects(image_path):
 
 
 # return types:
-# thread_id
+# directory where images located
 # vector of arrays with coordinates for each face, 
 # where array starts with face unique index.
 # 2 - invalid number of arguments
 argv = sys.argv
 if(len(argv) != 2):
-    print "err"
+    sys.stdout.write('err' + '\n')
 else:
-	print tmp_dir
+	sys.stdout.write(tmp_dir + '\n')
 	res = get_face_rects(argv[1])
 	for element in res:
-		print element
-		print ','
-	print '.'
+		sys.stdout.write(str(element) + '\n')
+		sys.stdout.write(',' + '\n')
+	sys.stdout.write('.' + '\n')
