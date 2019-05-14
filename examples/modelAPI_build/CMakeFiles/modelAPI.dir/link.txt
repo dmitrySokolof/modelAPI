@@ -1,1 +1,0 @@
-/usr/bin/g++  -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -dynamiclib -Wl,-headerpad_max_install_names  -o libmodelAPI.dylib -install_name @rpath/libmodelAPI.dylib CMakeFiles/modelAPI.dir/vgg-face-api.cpp.o 
