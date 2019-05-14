@@ -18,7 +18,10 @@ namespace UUUU
      * 
      * @param img - Image on which faces are located.
      * @param template_img_path - Path to template images.
-     * @return dictionary with person id (string) as key and face coordinates (array of integer values) as value.
+     * @param scriptToExecute - Path to script.
+     * @return pair of dictionaries with person id as string and face coordinates as array of integer values.
+     *         first  – dictionary of known people.
+     *         second – dictionary of unknown people.
      * 
      * Here is specification of coordinates on each array in result vector.
      * `resultArray[0]` - Person id;
@@ -41,6 +44,6 @@ namespace UUUU
      * |                                |
      * ----------------------------------
      */
-     std::map<std::string, Coords> findLabeledFaceRect(const std::string& img, const std::string& template_img_path, const std::string& scriptsFolder = "");
+     std::pair< std::map<std::string, Coords>, std::map<std::string, Coords> > findLabeledFaceRect(const std::string& img, const std::string& template_img_path, const std::string& scriptsFolder = "");
 
 } // namespace UUUU
