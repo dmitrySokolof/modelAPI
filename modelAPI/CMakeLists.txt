@@ -16,7 +16,7 @@ set(RESOURCE_FILES
 	face_extractor.py
 	deploy.prototxt
 	weights.caffemodel
-	vgg_face_weights.h5
+	recognition_model.h5
 	)
 
 include_directories(${MODELAPI_NEEDED_INCLUDES})

@@ -5,8 +5,8 @@
 /// EXAMPLE of usage.
 int main()
 {
-    /// MARK: last '/' is important and needed.
-    std::string template_img_path = "/Users/dmitrysokolov/Documents/Diplom_dataset/template_dataset/";
+    /// MARK: should not have '/' as a last path symbol.
+    std::string template_img_path = "/Users/dmitrysokolov/Documents/Diplom_dataset/template_dataset";
     std::string img3 = "/Users/dmitrysokolov/Documents/Diplom_dataset/test_group_images/Derduga_Ryabov_Fedorov.jpg";
     auto resMap = UUUU::findLabeledFaceRect(img3, template_img_path);
     for (std::map< std::string, UUUU::Coords >::iterator i = resMap.begin(); i != resMap.end(); i++)

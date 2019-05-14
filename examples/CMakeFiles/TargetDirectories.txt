@@ -1,0 +1,6 @@
+/Users/dmitrysokolov/ModelAPI/examples/CMakeFiles/rebuild_cache.dir
+/Users/dmitrysokolov/ModelAPI/examples/CMakeFiles/edit_cache.dir
+/Users/dmitrysokolov/ModelAPI/examples/CMakeFiles/Example.dir
+/Users/dmitrysokolov/ModelAPI/examples/modelAPI_build/CMakeFiles/rebuild_cache.dir
+/Users/dmitrysokolov/ModelAPI/examples/modelAPI_build/CMakeFiles/edit_cache.dir
+/Users/dmitrysokolov/ModelAPI/examples/modelAPI_build/CMakeFiles/modelAPI.dir

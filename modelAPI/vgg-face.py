@@ -29,7 +29,7 @@
 import shutil
 import sys
 import os
-from keras.models import Model, Sequential, model_from_json
+from keras.models import Model, Sequential, model_from_json, load_model
 from keras.layers import Input, Convolution2D, ZeroPadding2D, MaxPooling2D, Flatten, Dense, Dropout, Activation
 from PIL import Image
 import numpy as np
@@ -138,7 +138,9 @@ def loadFaceDescriptor():
     model.load_weights(weights_path)
     
     _vgg_face_descriptor = Model(inputs=model.layers[0].input, outputs=model.layers[-2].output)
-    return _vgg_face_descriptor
+    _vgg_face_descriptor.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    _vgg_face_descriptor.save('recognition_model.h5')
+    # return _vgg_face_descriptor
 
 
 # MARK: verifyFace
@@ -173,7 +175,7 @@ argv = sys.argv
 if(len(argv) != 3):
     sys.stdout.write('2' + '\n')
 else:
-    vgg_face_descriptor = loadFaceDescriptor()
+    vgg_face_descriptor = load_model('recognition_model.h5')
     template_dir = argv[1]
     target_img_dir = argv[2]
 
@@ -201,5 +203,3 @@ else:
             sys.stdout.write(image_id + '\n')
 
     shutil.rmtree(target_img_dir)
-
-

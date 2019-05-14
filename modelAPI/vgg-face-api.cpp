@@ -52,7 +52,7 @@ std::vector<std::string> _whichFace(const std::string& template_img_path, const 
 {
     const std::string scriptToExecute = MakeScriptPath(scriptsFolder, "vgg-face.py");
 
-    const std::string command = "python " + scriptToExecute + " " + template_img_path + " " + target_img_path + "/";
+    const std::string command = std::string("python \"") + scriptToExecute + std::string("\" \"") + template_img_path + std::string("/\" \"") + target_img_path + std::string("/\"");
 
     std::vector<std::string> result;
 
@@ -87,6 +87,7 @@ namespace UUUU
      * 
      * @param img - Image on which faces are located.
      * @param template_img_path - Path to template images.
+     * @param scriptToExecute - Path to script.
      * @return dictionary with person id as string and face coordinates as array of integer values.
      * 
      * Here is specification of coordinates on each array in result vector.
@@ -114,7 +115,7 @@ namespace UUUU
     {
         const std::string scriptToExecute = MakeScriptPath(scriptsFolder, "face_extractor.py");
         
-        const std::string command = "python " + scriptToExecute + " " + img;
+        const std::string command = std::string("python \"") + scriptToExecute + std::string("\" \"") + img + std::string("\"");
 
         redi::ipstream in(command);
         std::string buffer;

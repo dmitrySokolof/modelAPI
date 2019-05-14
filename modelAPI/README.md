@@ -8,4 +8,4 @@ Depended files, which have to be put to the same directory as API sources:
 2. face_extractor.py
 3. deploy.prototxt
 4. weights.caffemodel
-5. vgg_face_weights.h5
+5. recognition_model.h5
