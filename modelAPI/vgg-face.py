@@ -175,7 +175,8 @@ argv = sys.argv
 if(len(argv) != 3):
     sys.stdout.write('2' + '\n')
 else:
-    vgg_face_descriptor = load_model('recognition_model.h5')
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    vgg_face_descriptor = load_model(base_dir + '/recognition_model.h5')
     template_dir = argv[1]
     target_img_dir = argv[2]
 
