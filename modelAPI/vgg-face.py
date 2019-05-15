@@ -180,10 +180,10 @@ else:
     template_dir = argv[1]
     target_img_dir = argv[2]
 
-    if os.path.exists(target_img_dir + '.DS_Store'):
-        os.remove(target_img_dir + '.DS_Store')
     for target_img_file in sorted(os.listdir(target_img_dir)):
         image_id, file_extension = os.path.splitext(target_img_file)
+        if (file_extension not in ['.png','.JPG','.jpg','.jpeg', '.JPEG', '.PNG']):
+            continue
         result = 0
 
         cosine_similarity = 1
@@ -203,4 +203,4 @@ else:
         if result == 1: 
             sys.stdout.write(image_id + '\n')
 
-    shutil.rmtree(target_img_dir)
+    shutil.rmtree(target_img_dir, ignore_errors=True)
